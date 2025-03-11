@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Particles } from "@/components/magicui/particles";
 import { MagicCard } from "@/components/magicui/magic-card";
+import { EvervaultCard } from "@/components/ui/evervault-card";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 
 export default function Level2() {
   const [input, setInput] = useState("");
@@ -24,7 +26,7 @@ export default function Level2() {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white px-8 overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white px-8 overflow-hidden">
       {/* Particles Background */}
       <Particles className="absolute inset-0 z-0" quantity={80} ease={80} color="#8f98a0" refresh />
 
@@ -47,11 +49,7 @@ export default function Level2() {
         </p>
 
         {/* Encrypted Text Display */}
-        <MagicCard border glow>
-          <div className="p-4 bg-gray-800 rounded-lg shadow-lg text-center">
-            <h2 className="text-2xl font-mono text-purple-300 tracking-widest">{encryptedText}</h2>
-          </div>
-        </MagicCard>
+        <EvervaultCard text={encryptedText} className="w-64 h-64" />
 
         {/* Input Field */}
         <motion.input
@@ -65,19 +63,15 @@ export default function Level2() {
           transition={{ duration: 0.5 }}
         />
 
-        {/* Submit Button */}
-        <MagicCard border glow>
-          <motion.button
-            onClick={handleSubmit}
-            className="px-6 py-2 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 
-                      hover:from-pink-600 hover:via-red-600 hover:to-yellow-600 
-                      text-white font-semibold rounded transition shadow-md"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            Submit
-          </motion.button>
-        </MagicCard>
+        {/* Submit Button with HoverBorderGradient */}
+        <HoverBorderGradient
+          onClick={handleSubmit}
+          containerClassName="mt-4"
+          className="text-white font-medium tracking-wide shadow-md hover:shadow-lg hover:brightness-110"
+          gradient="from-pink-500 via-red-500 to-yellow-500"
+        >
+          Submit
+        </HoverBorderGradient>
 
         {/* Success Message */}
         {isCorrect && (

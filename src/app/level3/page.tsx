@@ -5,15 +5,32 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Particles } from "@/components/magicui/particles";
 import { MagicCard } from "@/components/magicui/magic-card";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import { FileUpload } from "@/components/ui/file-upload"; // Your custom FileUpload component
 
 export default function Level3() {
   const [message, setMessage] = useState("");
+  const [file, setFile] = useState<File | null>(null); // Store uploaded file
   const [isCorrect, setIsCorrect] = useState(false);
   const router = useRouter();
 
-  const correctMessage = "foundpassword123"; // Change this to match your PCAP analysis result
+  const correctMessage = "foundpassword123"; // Expected PCAP analysis result
+
+  // Handle file selection (ensures only `.pcap` is uploaded)
+  const handleFileChange = (files: File[]) => {
+    if (files.length > 0 && files[0].name.endsWith(".pcap")) {
+      setFile(files[0]);
+    } else {
+      alert("Please upload a valid .pcap file.");
+    }
+  };
 
   const handleSubmit = () => {
+    if (!message.trim()) {
+      alert("Enter your extracted data before submitting.");
+      return;
+    }
+
     if (message.toLowerCase() === correctMessage) {
       setIsCorrect(true);
       setTimeout(() => router.push("/level4"), 2000);
@@ -23,7 +40,7 @@ export default function Level3() {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white px-8 overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white px-8 overflow-hidden">
       {/* Particles Background */}
       <Particles className="absolute inset-0 z-0" quantity={100} color="#7289da" />
 
@@ -45,14 +62,8 @@ export default function Level3() {
           "The network whispers its secrets, but only those who listen will hear the truth."
         </p>
 
-        {/* File Upload */}
-        <MagicCard border glow>
-          <input
-            type="file"
-            accept=".pcap"
-            className="p-2 text-black bg-white rounded border border-gray-600"
-          />
-        </MagicCard>
+        {/* File Upload (Using Your Custom Component) */}
+        <FileUpload onChange={handleFileChange} />
 
         {/* Input Field */}
         <motion.input
@@ -67,18 +78,15 @@ export default function Level3() {
         />
 
         {/* Submit Button */}
-        <MagicCard border glow>
-          <motion.button
-            onClick={handleSubmit}
-            className="px-6 py-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 
-                      hover:from-cyan-600 hover:via-blue-600 hover:to-purple-600 
-                      text-white font-semibold rounded transition shadow-md"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            Submit
-          </motion.button>
-        </MagicCard>
+        <HoverBorderGradient 
+          onClick={handleSubmit} 
+          containerClassName="mt-4"
+          gradient="from-blue-500 via-cyan-500 to-teal-500"
+          className="text-white font-medium tracking-wide shadow-md transition-all 
+                     hover:shadow-lg hover:brightness-110"
+        >
+          Submit
+        </HoverBorderGradient>
 
         {/* Success Message */}
         {isCorrect && (
