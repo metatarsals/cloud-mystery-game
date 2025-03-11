@@ -33,7 +33,7 @@ export default function Level3() {
 
     if (message.toLowerCase() === correctMessage) {
       setIsCorrect(true);
-      setTimeout(() => router.push("/level4"), 2000);
+      setTimeout(() => router.push("/the-final-deception"), 2000);
     } else {
       alert("The data eludes you... Seek deeper.");
     }
