@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface LensProps {
   children: React.ReactNode;
@@ -15,6 +15,7 @@ interface LensProps {
   isFocusing?: () => void;
   hovering?: boolean;
   setHovering?: (hovering: boolean) => void;
+  className?: string; // Add className prop here
 }
 
 export const Lens: React.FC<LensProps> = ({
@@ -25,6 +26,7 @@ export const Lens: React.FC<LensProps> = ({
   position = { x: 200, y: 150 },
   hovering,
   setHovering,
+  className, // Destructure className here
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +35,6 @@ export const Lens: React.FC<LensProps> = ({
   const isHovering = hovering !== undefined ? hovering : localIsHovering;
   const setIsHovering = setHovering || setLocalIsHovering;
 
-  // const [isHovering, setIsHovering] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 100, y: 100 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -46,7 +47,7 @@ export const Lens: React.FC<LensProps> = ({
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden rounded-lg z-20"
+      className={`relative overflow-hidden rounded-lg z-20 ${className}`} // Apply className here
       onMouseEnter={() => {
         setIsHovering(true);
       }}
@@ -100,9 +101,7 @@ export const Lens: React.FC<LensProps> = ({
                   }px ${mousePosition.y}px, black 100%, transparent 100%)`,
                   WebkitMaskImage: `radial-gradient(circle ${
                     lensSize / 2
-                  }px at ${mousePosition.x}px ${
-                    mousePosition.y
-                  }px, black 100%, transparent 100%)`,
+                  }px at ${mousePosition.x}px ${mousePosition.y}px, black 100%, transparent 100%)`,
                   transformOrigin: `${mousePosition.x}px ${mousePosition.y}px`,
                   zIndex: 50,
                 }}
