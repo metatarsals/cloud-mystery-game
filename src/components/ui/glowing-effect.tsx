@@ -16,6 +16,7 @@ interface GlowingEffectProps {
   movementDuration?: number;
   borderWidth?: number;
 }
+
 const GlowingEffect = memo(
   ({
     blur = 0,
@@ -31,7 +32,7 @@ const GlowingEffect = memo(
   }: GlowingEffectProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const lastPosition = useRef({ x: 0, y: 0 });
-    const animationFrameRef = useRef<number>(0);
+    const animationFrameRef = useRef<number | null>(null);
 
     const handleMove = useCallback(
       (e?: MouseEvent | { x: number; y: number }) => {
@@ -140,10 +141,10 @@ const GlowingEffect = memo(
               "--gradient":
                 variant === "white"
                   ? `repeating-conic-gradient(
-                  from 236.84deg at 50% 50%,
-                  var(--black),
-                  var(--black) calc(25% / var(--repeating-conic-gradient-times))
-                )`
+                      from 236.84deg at 50% 50%,
+                      var(--black),
+                      var(--black) calc(25% / var(--repeating-conic-gradient-times))
+                    )`
                   : `radial-gradient(circle, #1e90ff 10%, #1e90ff00 20%),
                     radial-gradient(circle at 40% 40%, #00bfff 5%, #00bfff00 15%),
                     radial-gradient(circle at 60% 60%, #87cefa 10%, #87cefa00 20%),
@@ -156,12 +157,13 @@ const GlowingEffect = memo(
                       #4682b4 calc(75% / var(--repeating-conic-gradient-times)),
                       #1e90ff calc(100% / var(--repeating-conic-gradient-times))
                     )`,
+              WebkitMaskImage: `linear-gradient(#0000,#0000),conic-gradient(from calc((var(--start)-var(--spread))*1deg),#00000000 0deg,#fff,#00000000 calc(var(--spread)*2deg))`,
             } as React.CSSProperties
           }
           className={cn(
             "pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-opacity",
             glow && "opacity-100",
-            blur > 0 && "blur-[var(--blur)] ",
+            blur > 0 && "blur-[var(--blur)]",
             className,
             disabled && "!hidden"
           )}
@@ -170,13 +172,12 @@ const GlowingEffect = memo(
             className={cn(
               "glow",
               "rounded-[inherit]",
-              'after:content-[""] after:rounded-[inherit] after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))]',
+              "after:content-[''] after:rounded-[inherit] after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))]",
               "after:[border:var(--glowingeffect-border-width)_solid_transparent]",
               "after:[background:var(--gradient)] after:[background-attachment:fixed]",
               "after:opacity-[var(--active)] after:transition-opacity after:duration-300",
               "after:[mask-clip:padding-box,border-box]",
-              "after:[mask-composite:intersect]",
-              "after:[mask-image:linear-gradient(#0000,#0000),conic-gradient(from_calc((var(--start)-var(--spread))*1deg),#00000000_0deg,#fff,#00000000_calc(var(--spread)*2deg))]"
+              "after:[mask-composite:intersect]"
             )}
           />
         </div>
