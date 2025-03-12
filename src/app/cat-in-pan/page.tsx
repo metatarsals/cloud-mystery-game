@@ -46,7 +46,7 @@ export default function Level4() {
         </MagicCard>
 
         <p className="text-lg text-neutral-400 text-center italic">
-          "The door stands locked. Only the enlightened may pass."
+          &quot;The door stands locked. Only the enlightened may pass.&quot;
         </p>
 
         {/* Username & Password Input Box */}
@@ -101,7 +101,7 @@ export default function Level4() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            ✅ "The void acknowledges you... Proceed, if you dare."
+            ✅ &quot;The void acknowledges you... Proceed, if you dare.&quot;
           </motion.p>
         )}
       </motion.div>
