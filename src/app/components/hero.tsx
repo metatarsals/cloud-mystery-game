@@ -33,7 +33,7 @@ export default function Hero() {
               size: "icon",
               className: "px-4 py-4 !rounded-full",
             })}
-            href="/hidden-in-plain-sight"
+            href="/chicken-noodle-soup"
           >
             <MagnifyingGlassIcon className="w-16 h-16" />
           </Link>

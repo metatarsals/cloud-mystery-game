@@ -19,7 +19,7 @@ export default function Level1() {
   const handleSubmit = () => {
     if (input.toLowerCase() === correctAnswer) {
       setIsCorrect(true);
-      setTimeout(() => router.push("/ciphered-whispers"), 2000);
+      setTimeout(() => router.push("/cheese-french-fries"), 2000);
     } else {
       alert("Incorrect! The shadows whisper… Try again.");
     }

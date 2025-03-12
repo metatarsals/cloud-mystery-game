@@ -19,7 +19,7 @@ export default function Level2() {
   const handleSubmit = () => {
     if (input.toUpperCase() === correctAnswer) {
       setIsCorrect(true);
-      setTimeout(() => router.push("/traces-of-truth"), 2000);
+      setTimeout(() => router.push("/red-blue-green"), 2000);
     } else {
       alert("The cipher mocks your ignorance... Try again.");
     }
