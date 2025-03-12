@@ -10,32 +10,57 @@ import { FileUpload } from "@/components/ui/file-upload"; // Your custom FileUpl
 
 export default function Level3() {
   const [message, setMessage] = useState("");
-  const [file, setFile] = useState<File | null>(null); // Store uploaded file
+  const [file, setFile] = useState<File | null>(null); // ✅ Allow file updates
   const [isCorrect, setIsCorrect] = useState(false);
   const router = useRouter();
 
-  const correctMessage = "foundpassword123"; // Expected PCAP analysis result
+  const correctMessage = "foundpassword123"; // Expected result
 
-  // Handle file selection (ensures only `.pcap` is uploaded)
-  const handleFileChange = (files: File[]) => {
-    if (files.length > 0 && files[0].name.endsWith(".pcap")) {
-      setFile(files[0]);
-    } else {
-      alert("Please upload a valid .pcap file.");
+  // ✅ Define the missing handleFileChange function
+  const handleFileChange = (selectedFile: File | null) => {
+    if (selectedFile) {
+      setFile(selectedFile);
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!message.trim()) {
       alert("Enter your extracted data before submitting.");
       return;
     }
 
+    if (!file) {
+      alert("Upload a .pcap file before submitting.");
+      return;
+    }
+
+    // ✅ Local validation before sending request
     if (message.toLowerCase() === correctMessage) {
       setIsCorrect(true);
       setTimeout(() => router.push("/cat-in-pan"), 2000);
-    } else {
-      alert("The data eludes you... Seek deeper.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("message", message);
+
+    try {
+      const response = await fetch("/api/analyze-pcap", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (data.correct) {
+        setIsCorrect(true);
+        setTimeout(() => router.push("/cat-in-pan"), 2000);
+      } else {
+        alert("The data eludes you... Seek deeper.");
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("Failed to process the file. Try again.");
     }
   };
 
@@ -59,7 +84,7 @@ export default function Level3() {
         </MagicCard>
 
         <p className="text-lg text-neutral-300 text-center italic">
-          "The network whispers its secrets, but only those who listen will hear the truth."
+          &quot;The network whispers its secrets, but only those who listen will hear the truth.&quot;
         </p>
 
         {/* File Upload (Using Your Custom Component) */}
@@ -96,7 +121,7 @@ export default function Level3() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            ✅ "The transmissions fade… You have deciphered the ghostly echoes. Move forward."
+            ✅ &quot;The transmissions fade… You have deciphered the ghostly echoes. Move forward.&quot;
           </motion.p>
         )}
       </motion.div>

@@ -45,7 +45,7 @@ export default function Level2() {
         </MagicCard>
 
         <p className="text-lg text-neutral-300 text-center italic">
-          "The voices are trapped within the cipher. Can you hear them? Can you set them free?"
+          &quot;The voices are trapped within the cipher. Can you hear them? Can you set them free?&quot;
         </p>
 
         {/* Encrypted Text Display */}
@@ -81,7 +81,7 @@ export default function Level2() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            ✅ "The voices grow silent. You have seen through the illusion… Move forward."
+            ✅ &quot;The voices grow silent. You have seen through the illusion… Move forward.&quot;
           </motion.p>
         )}
       </motion.div>
