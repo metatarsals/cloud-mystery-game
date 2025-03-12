@@ -10,6 +10,7 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 export default function Level4() {
   const [input, setInput] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // Store error message
   const router = useRouter();
 
   // Expected decrypted message (Update with actual RSA decryption result)
@@ -18,16 +19,17 @@ export default function Level4() {
   const handleSubmit = () => {
     if (input.toLowerCase() === correctPassphrase) {
       setIsCorrect(true);
-      setTimeout(() => router.push("/completion"), 2000); // Redirects to final page
+      setErrorMessage(""); // Clear errors
+      setTimeout(() => router.push("/completion"), 2000);
     } else {
-      alert("The shadows conceal the truth... Look deeper.");
+      setErrorMessage("The shadows conceal the truth... Look deeper.");
     }
   };
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white px-8 overflow-hidden">
       {/* Particles Background */}
-      <Particles className="absolute inset-0 z-0" quantity={100} ease={100} color="#00ffcc" refresh />
+      <Particles className="absolute inset-0 z-0" quantity={100} color="#00ffcc" refresh />
 
       {/* Main Content */}
       <motion.div
@@ -37,7 +39,7 @@ export default function Level4() {
         transition={{ duration: 1.5, ease: "easeOut" }}
       >
         {/* Heading with MagicCard */}
-        <MagicCard border glow className="p-6 rounded-lg shadow-lg">
+        <MagicCard className="p-6 rounded-lg shadow-lg border border-teal-500 bg-gray-900">
           <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-green-400 via-teal-500 to-gray-400 bg-clip-text text-transparent">
             Level 4 - The Forbidden Gate
           </h1>
@@ -47,31 +49,23 @@ export default function Level4() {
           "The door stands locked. Only the enlightened may pass."
         </p>
 
-        {/* Username & Password Input Box with MagicCard Effect */}
-      
-        <MagicCard 
-  border 
-  glow 
-  className="p-6 rounded-lg shadow-lg w-72 text-center border-2 border-teal-400/50 bg-gradient-to-r from-green-900 via-teal-900 to-gray-900"
->
-  <div className="flex flex-col space-y-4">
-    <input 
-      type="text" 
-      placeholder="Username" 
-      className="p-2 text-white rounded border border-teal-500 bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-400"
-    />
-    <input 
-      type="password" 
-      placeholder="Password" 
-      className="p-2 text-white rounded border border-teal-500 bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-400"
-    />
-  </div>
-</MagicCard>
+        {/* Username & Password Input Box */}
+        <MagicCard className="p-6 rounded-lg shadow-lg w-72 text-center border-2 border-teal-400/50 bg-gradient-to-r from-green-900 via-teal-900 to-gray-900">
+          <div className="flex flex-col space-y-4">
+            <input
+              type="text"
+              placeholder="Username"
+              className="p-2 text-white rounded border border-teal-500 bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-400"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              className="p-2 text-white rounded border border-teal-500 bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-400"
+            />
+          </div>
+        </MagicCard>
 
-
-
-
-        {/* Hidden RSA Message (Users must inspect page source) */}
+        {/* Hidden RSA Message */}
         <p className="hidden">RSA-Encrypted Message: U2FsdGVkX19XbGF3dmlkZXJ0cnVzdG5vMQ==</p>
 
         {/* Input Field for Decrypted Passphrase */}
@@ -86,7 +80,10 @@ export default function Level4() {
           transition={{ duration: 0.5 }}
         />
 
-        {/* Submit Button with HoverBorderGradient */}
+        {/* Error Message */}
+        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+
+        {/* Submit Button */}
         <HoverBorderGradient
           onClick={handleSubmit}
           containerClassName="mt-4"

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Particles } from "@/components/magicui/particles";
 import { MagicCard } from "@/components/magicui/magic-card";
@@ -45,7 +46,7 @@ export default function Level1() {
         </MagicCard>
 
         <p className="text-lg text-neutral-100 text-center">
-          "Every image speaks, but some whispers must be decoded..."
+          &quot;Every image speaks, but some whispers must be decoded...&quot;
         </p>
 
         {/* Centered 3D Image Container with Lens Effect */}
@@ -54,10 +55,12 @@ export default function Level1() {
             <CardBody className="flex justify-center items-center">
               <CardItem translateZ={30} className="shadow-lg rounded-lg">
                 <Lens zoomFactor={2.0} lensSize={120} className="flex justify-center items-center">
-                  <img
+                  <Image
                     src="/stego-image.jpeg"
                     alt="Steganographic Image"
-                    className="w-64 h-64 md:w-72 md:h-72 object-cover rounded-lg"
+                    width={288} // Adjusted width
+                    height={288} // Adjusted height
+                    className="rounded-lg object-cover"
                   />
                 </Lens>
               </CardItem>
@@ -82,17 +85,15 @@ export default function Level1() {
 
           {/* Submit Button with Proper Spacing */}
           <HoverBorderGradient
-  onClick={handleSubmit}
-  className="text-white font-medium tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out"
-  gradient="from-pink-500 via-purple-500 to-orange-500"
->
-  Submit
-</HoverBorderGradient>
+            onClick={handleSubmit}
+            className="text-white font-medium tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out"
+            gradient="from-pink-500 via-purple-500 to-orange-500"
+          >
+            Submit
+          </HoverBorderGradient>
 
-{/* Added proper spacing without affecting glow */}
-<div className="h-10"></div>
-
-
+          {/* Added proper spacing without affecting glow */}
+          <div className="h-10"></div>
         </div>
 
         {/* Success Message */}
@@ -103,7 +104,7 @@ export default function Level1() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            ✅ "Access granted. Proceeding to the next layer..."
+            ✅ &quot;Access granted. Proceeding to the next layer...&quot;
           </motion.p>
         )}
       </motion.div>
