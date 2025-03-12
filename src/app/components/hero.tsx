@@ -2,7 +2,7 @@
 import { Particles } from "@/components/magicui/particles";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { ArrowTopRightIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 export default function Hero() {
   return (
@@ -25,15 +25,15 @@ export default function Hero() {
           a name. a place. a moment. lost in between.
         </p>
 
-        {/* Updated Button Section */}
+        {/* Search Button */}
         <div className="mt-8">
           <Link
+            href="/chicken-noodle-soup"
             className={buttonVariants({
               variant: "outline",
               size: "icon",
-              className: "px-4 py-4 !rounded-full",
+              className: "p-5 !rounded-full",
             })}
-            href="/chicken-noodle-soup"
           >
             <MagnifyingGlassIcon className="w-16 h-16" />
           </Link>
