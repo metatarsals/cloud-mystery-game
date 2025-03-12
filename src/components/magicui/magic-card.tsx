@@ -13,6 +13,8 @@ interface MagicCardProps {
   gradientOpacity?: number;
   gradientFrom?: string;
   gradientTo?: string;
+  border?: boolean; // Add the border prop
+  glow?: boolean; // Add the glow prop
 }
 
 export function MagicCard({
@@ -23,6 +25,8 @@ export function MagicCard({
   gradientOpacity = 0.8,
   gradientFrom = "#9E7AFF",
   gradientTo = "#FE8BBB",
+  border = false, // Default value for border
+  glow = false,  // Default value for glow
 }: MagicCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(-gradientSize);
@@ -38,7 +42,7 @@ export function MagicCard({
         mouseY.set(clientY - top);
       }
     },
-    [mouseX, mouseY],
+    [mouseX, mouseY]
   );
 
   const handleMouseOut = useCallback(
@@ -49,7 +53,7 @@ export function MagicCard({
         mouseY.set(-gradientSize);
       }
     },
-    [handleMouseMove, mouseX, gradientSize, mouseY],
+    [handleMouseMove, mouseX, gradientSize, mouseY]
   );
 
   const handleMouseEnter = useCallback(() => {
@@ -78,16 +82,21 @@ export function MagicCard({
   return (
     <div
       ref={cardRef}
-      className={cn("group relative rounded-[inherit]", className)}
+      className={cn(
+        "group relative rounded-[inherit]",
+        className,
+        border ? "border-2 border-white" : "", // Add border class conditionally
+        glow ? "glow-effect" : "" // Add glow class conditionally
+      )}
     >
       <motion.div
         className="pointer-events-none absolute inset-0 rounded-[inherit] bg-border duration-300 group-hover:opacity-100"
         style={{
           background: useMotionTemplate`
-          radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
-          ${gradientFrom}, 
-          ${gradientTo}, 
-          hsl(var(--border)) 100%
+            radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
+            ${gradientFrom}, 
+            ${gradientTo}, 
+            hsl(var(--border)) 100%
           )
           `,
         }}
