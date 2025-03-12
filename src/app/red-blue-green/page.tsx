@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -17,9 +15,9 @@ export default function Level3() {
   const correctMessage = "foundpassword123"; // Expected result
 
   // ✅ Define the missing handleFileChange function
-  const handleFileChange = (selectedFile: File | null) => {
-    if (selectedFile) {
-      setFile(selectedFile);
+  const handleFileChange = (files: File[]) => {
+    if (files && files.length > 0) {
+      setFile(files[0]); // Assuming single file upload
     }
   };
 
