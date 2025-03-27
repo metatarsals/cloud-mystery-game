@@ -14,7 +14,7 @@ export default function Level1() {
   const [isCorrect, setIsCorrect] = useState(false);
   const router = useRouter();
 
-  const correctAnswer = "hiddenmessage";
+  const correctAnswer = "cheese-french-fries";
 
   const handleSubmit = () => {
     if (input.toLowerCase() === correctAnswer) {
