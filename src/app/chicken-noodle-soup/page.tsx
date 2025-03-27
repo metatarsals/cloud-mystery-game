@@ -33,17 +33,17 @@ export default function Level1() {
 
       {/* Main Content */}
       <motion.div
-        className="relative z-10 flex flex-col items-center space-y-10 mt-20"
+        className="relative z-10 flex flex-col items-center space-y-10 mt-8"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
       >
         {/* Heading (Keeping Glow) */}
-        <MagicCard border glow className="p-6 rounded-lg shadow-lg bg-transparent">
+        {/* <MagicCard border glow className="p-6 rounded-lg shadow-lg bg-transparent">
           <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-red-400 via-purple-600 to-indigo-500 bg-clip-text text-transparent">
             Level 1 - The Silent Image
           </h1>
-        </MagicCard>
+        </MagicCard> */}
 
         <p className="text-lg text-neutral-100 text-center">
           &quot;Every image speaks, but some whispers must be decoded...&quot;
@@ -56,10 +56,10 @@ export default function Level1() {
               <CardItem translateZ={30} className="shadow-lg rounded-lg">
                 <Lens zoomFactor={2.0} lensSize={120} className="flex justify-center items-center">
                   <Image
-                    src="/stego-image.jpeg"
-                    alt="Steganographic Image"
-                    width={288} // Adjusted width
-                    height={288} // Adjusted height
+                    src="/level-1-image-final.jpg"
+                    alt="check here"
+                    width={1785}
+                    height={2379} 
                     className="rounded-lg object-cover"
                   />
                 </Lens>
@@ -69,9 +69,9 @@ export default function Level1() {
         </div>
 
         {/* Input & Button Section */}
-        <div className="flex flex-col items-center gap-6">
+        {/* <div className="flex flex-col items-center gap-6"> */}
           {/* Input Field */}
-          <motion.input
+          {/* <motion.input
             type="text"
             placeholder="Enter the hidden truth..."
             className="p-2 text-black rounded border border-gray-600 shadow-lg w-64 text-center transition focus:border-indigo-500 focus:outline-none"
@@ -81,23 +81,23 @@ export default function Level1() {
             animate={{ scale: 1 }}
             transition={{ duration: 0.5 }}
             whileFocus={{ scale: 1.05 }}
-          />
+          /> */}
 
           {/* Submit Button with Proper Spacing */}
-          <HoverBorderGradient
+          {/* <HoverBorderGradient
             onClick={handleSubmit}
             className="text-white font-medium tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out"
             gradient="from-pink-500 via-purple-500 to-orange-500"
           >
             Submit
-          </HoverBorderGradient>
+          </HoverBorderGradient> */}
 
           {/* Added proper spacing without affecting glow */}
-          <div className="h-10"></div>
-        </div>
+          {/* <div className="h-10"></div>
+        </div> */}
 
         {/* Success Message */}
-        {isCorrect && (
+        {/* {isCorrect && (
           <motion.p
             className="text-green-400 text-lg animate-pulse"
             initial={{ opacity: 0 }}
@@ -106,7 +106,7 @@ export default function Level1() {
           >
             ✅ &quot;Access granted. Proceeding to the next layer...&quot;
           </motion.p>
-        )}
+        )} */}
       </motion.div>
     </div>
   );
