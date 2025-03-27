@@ -13,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowHero(true);
-    }, 10000);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, []);
