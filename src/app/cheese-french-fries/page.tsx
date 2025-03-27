@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Particles } from "@/components/magicui/particles";
-import { MagicCard } from "@/components/magicui/magic-card";
 import { EvervaultCard } from "@/components/ui/evervault-card";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 
@@ -38,18 +37,18 @@ export default function Level2() {
         transition={{ duration: 1.5, ease: "easeOut" }}
       >
         {/* Heading with MagicCard */}
-        <MagicCard border glow className="p-6 rounded-lg shadow-lg">
+        {/* <MagicCard border glow className="p-6 rounded-lg shadow-lg">
           <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
             Level 2 - The Whispering Code
           </h1>
-        </MagicCard>
+        </MagicCard> */}
 
         <p className="text-lg text-neutral-300 text-center italic">
           &quot;The voices are trapped within the cipher. Can you hear them? Can you set them free?&quot;
         </p>
 
         {/* Encrypted Text Display */}
-        <EvervaultCard text={encryptedText} className="w-64 h-64" />
+        <EvervaultCard text={encryptedText} className="w-96 h-96" />
 
         {/* Input Field */}
         <motion.input

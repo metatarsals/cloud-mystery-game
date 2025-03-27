@@ -16,7 +16,7 @@ export const EvervaultCard: React.FC<EvervaultCardProps> = ({ text, className })
   const [randomString, setRandomString] = useState<string>("");
 
   useEffect(() => {
-    const str = generateRandomString(1500);
+    const str = generateRandomString(150000);
     setRandomString(str);
   }, []);
 
@@ -43,7 +43,7 @@ export const EvervaultCard: React.FC<EvervaultCardProps> = ({ text, className })
       >
         <CardPattern mouseX={mouseX} mouseY={mouseY} randomString={randomString} />
         <div className="relative z-10 flex items-center justify-center">
-          <div className="relative h-44 w-44 rounded-full flex items-center justify-center text-white font-bold text-4xl">
+          <div className="relative h-44 w-44 rounded-full flex items-center justify-center text-white font-mono font-thin text-3xl tracking-wider">
             <span className="dark:text-white text-black z-20">{text}</span>
           </div>
         </div>
@@ -66,7 +66,7 @@ export function CardPattern({ mouseX, mouseY, randomString }: CardPatternProps) 
   };
 
   return (
-    <div className="pointer-events-none">
+    <div className="pointer-events-none opacity-50">
       <div className="absolute inset-0 rounded-2xl [mask-image:linear-gradient(white,transparent)] group-hover/card:opacity-50"></div>
       <motion.div
         className="absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500 to-blue-700 opacity-0 group-hover/card:opacity-100 backdrop-blur-xl transition duration-500"
