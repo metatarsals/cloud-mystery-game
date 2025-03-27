@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Particles } from "@/components/magicui/particles";
-import { MagicCard } from "@/components/magicui/magic-card";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { Lens } from "@/components/ui/lens";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
@@ -33,7 +32,7 @@ export default function Level1() {
 
       {/* Main Content */}
       <motion.div
-        className="relative z-10 flex flex-col items-center space-y-10 mt-8"
+        className="relative z-10 flex flex-col items-center space-y-10 mt-20"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
@@ -69,9 +68,9 @@ export default function Level1() {
         </div>
 
         {/* Input & Button Section */}
-        {/* <div className="flex flex-col items-center gap-6"> */}
+        <div className="flex flex-col items-center gap-6">
           {/* Input Field */}
-          {/* <motion.input
+          <motion.input
             type="text"
             placeholder="Enter the hidden truth..."
             className="p-2 text-black rounded border border-gray-600 shadow-lg w-64 text-center transition focus:border-indigo-500 focus:outline-none"
@@ -81,23 +80,23 @@ export default function Level1() {
             animate={{ scale: 1 }}
             transition={{ duration: 0.5 }}
             whileFocus={{ scale: 1.05 }}
-          /> */}
+          />
 
           {/* Submit Button with Proper Spacing */}
-          {/* <HoverBorderGradient
+          <HoverBorderGradient
             onClick={handleSubmit}
             className="text-white font-medium tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out"
             gradient="from-pink-500 via-purple-500 to-orange-500"
           >
             Submit
-          </HoverBorderGradient> */}
+          </HoverBorderGradient>
 
           {/* Added proper spacing without affecting glow */}
-          {/* <div className="h-10"></div>
-        </div> */}
+          <div className="h-10"></div>
+        </div>
 
         {/* Success Message */}
-        {/* {isCorrect && (
+        {isCorrect && (
           <motion.p
             className="text-green-400 text-lg animate-pulse"
             initial={{ opacity: 0 }}
@@ -106,7 +105,7 @@ export default function Level1() {
           >
             ✅ &quot;Access granted. Proceeding to the next layer...&quot;
           </motion.p>
-        )} */}
+        )}
       </motion.div>
     </div>
   );
