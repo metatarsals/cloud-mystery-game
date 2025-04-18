@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Particles } from "@/components/magicui/particles";
 import { EvervaultCard } from "@/components/ui/evervault-card";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import { LogoutButton } from "@/components/ui/logout-button";
 
 export default function Level2() {
   const [input, setInput] = useState("");
@@ -26,8 +27,17 @@ export default function Level2() {
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white px-8 overflow-hidden">
+      <div className="absolute top-4 right-4 z-50">
+          <LogoutButton />
+        </div>
       {/* Particles Background */}
-      <Particles className="absolute inset-0 z-0" quantity={80} ease={80} color="#8f98a0" refresh />
+      <Particles
+        className="absolute inset-0 z-0"
+        quantity={80}
+        ease={80}
+        color="#8f98a0"
+        refresh
+      />
 
       {/* Main Content */}
       <motion.div
@@ -44,7 +54,8 @@ export default function Level2() {
         </MagicCard> */}
 
         <p className="text-lg text-neutral-300 text-center italic">
-          &quot;The voices are trapped within the cipher. Can you hear them? Can you set them free?&quot;
+          &quot;The voices are trapped within the cipher. Can you hear them? Can
+          you set them free?&quot;
         </p>
 
         {/* Encrypted Text Display */}
@@ -80,7 +91,8 @@ export default function Level2() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            ✅ &quot;The voices grow silent. You have seen through the illusion… Move forward.&quot;
+            ✅ &quot;The voices grow silent. You have seen through the illusion…
+            Move forward.&quot;
           </motion.p>
         )}
       </motion.div>

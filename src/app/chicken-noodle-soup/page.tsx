@@ -8,6 +8,7 @@ import { Particles } from "@/components/magicui/particles";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { Lens } from "@/components/ui/lens";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import { LogoutButton } from "@/components/ui/logout-button";
 
 export default function Level1() {
   const [input, setInput] = useState("");
@@ -27,8 +28,19 @@ export default function Level1() {
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white px-8 overflow-hidden">
+      {/* Logout Button */}
+      <div className="absolute top-4 right-4 z-50">
+        <LogoutButton />
+      </div>
+
       {/* Background Particles */}
-      <Particles className="absolute inset-0 z-0" quantity={120} ease={100} color="#8f98a0" refresh />
+      <Particles
+        className="absolute inset-0 z-0"
+        quantity={120}
+        ease={100}
+        color="#8f98a0"
+        refresh
+      />
 
       {/* Main Content */}
       <motion.div
@@ -37,13 +49,6 @@ export default function Level1() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
       >
-        {/* Heading (Keeping Glow) */}
-        {/* <MagicCard border glow className="p-6 rounded-lg shadow-lg bg-transparent">
-          <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-red-400 via-purple-600 to-indigo-500 bg-clip-text text-transparent">
-            Level 1 - The Silent Image
-          </h1>
-        </MagicCard> */}
-
         <p className="text-lg text-neutral-100 text-center">
           &quot;Every image speaks, but some whispers must be decoded...&quot;
         </p>
@@ -53,12 +58,16 @@ export default function Level1() {
           <CardContainer className="flex justify-center items-center">
             <CardBody className="flex justify-center items-center">
               <CardItem translateZ={30} className="shadow-lg rounded-lg">
-                <Lens zoomFactor={2.0} lensSize={120} className="flex justify-center items-center">
+                <Lens
+                  zoomFactor={2.0}
+                  lensSize={120}
+                  className="flex justify-center items-center"
+                >
                   <Image
                     src="/level-1-image-final.jpg"
                     alt="check here"
                     width={1785}
-                    height={2379} 
+                    height={2379}
                     className="rounded-lg object-cover"
                   />
                 </Lens>
@@ -98,12 +107,11 @@ export default function Level1() {
         {/* Success Message */}
         {isCorrect && (
           <motion.p
-            className="text-green-400 text-lg animate-pulse"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            className="text-green-400 text-lg font-medium"
           >
-            ✅ &quot;Access granted. Proceeding to the next layer...&quot;
+            Correct! Moving to the next level...
           </motion.p>
         )}
       </motion.div>

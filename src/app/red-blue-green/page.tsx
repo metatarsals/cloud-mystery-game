@@ -7,6 +7,7 @@ import { Particles } from "@/components/magicui/particles";
 import { MagicCard } from "@/components/magicui/magic-card";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { FileUpload } from "@/components/ui/file-upload"; // Your custom FileUpload component
+import { LogoutButton } from "@/components/ui/logout-button";
 
 export default function Level3() {
   const [message, setMessage] = useState("");
@@ -66,8 +67,15 @@ export default function Level3() {
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white px-8 overflow-hidden">
+      <div className="absolute top-4 right-4 z-50">
+        <LogoutButton />
+      </div>
       {/* Particles Background */}
-      <Particles className="absolute inset-0 z-0" quantity={100} color="#7289da" />
+      <Particles
+        className="absolute inset-0 z-0"
+        quantity={100}
+        color="#7289da"
+      />
 
       {/* Main Content */}
       <motion.div
@@ -84,7 +92,8 @@ export default function Level3() {
         </MagicCard>
 
         <p className="text-lg text-neutral-300 text-center italic">
-          &quot;The network whispers its secrets, but only those who listen will hear the truth.&quot;
+          &quot;The network whispers its secrets, but only those who listen will
+          hear the truth.&quot;
         </p>
 
         {/* File Upload (Using Your Custom Component) */}
@@ -103,8 +112,8 @@ export default function Level3() {
         />
 
         {/* Submit Button */}
-        <HoverBorderGradient 
-          onClick={handleSubmit} 
+        <HoverBorderGradient
+          onClick={handleSubmit}
           containerClassName="mt-4"
           gradient="from-blue-500 via-cyan-500 to-teal-500"
           className="text-white font-medium tracking-wide shadow-md transition-all 
@@ -121,7 +130,8 @@ export default function Level3() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            ✅ &quot;The transmissions fade… You have deciphered the ghostly echoes. Move forward.&quot;
+            ✅ &quot;The transmissions fade… You have deciphered the ghostly
+            echoes. Move forward.&quot;
           </motion.p>
         )}
       </motion.div>
