@@ -1,11 +1,11 @@
 "use client";
 
-import Hero from "./components/hero";
-import { GlowingEffectDemo } from "./components/features";
-import GradientBackground from "./components/gradbg";
-// import Hero from "../components/hero";
-// import { GlowingEffectDemo } from "../components/features";
-// import GradientBackground from "../components/gradbg";
+// import Hero from "./components/hero";
+// import { GlowingEffectDemo } from "./components/features";
+// import GradientBackground from "./components/gradbg";
+import Hero from "../components/hero";
+import { GlowingEffectDemo } from "../components/features";
+import GradientBackground from "../components/gradbg";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
