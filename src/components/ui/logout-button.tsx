@@ -3,7 +3,6 @@
 import { HoverBorderGradient } from "./hover-border-gradient";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import LogoutIcon from "@mui/icons-material/Logout";
 import { LogOutIcon } from "lucide-react";
 
 export function LogoutButton() {
