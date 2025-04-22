@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Particles } from "@/components/magicui/particles";
@@ -8,12 +8,48 @@ import { MagicCard } from "@/components/magicui/magic-card";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { FileUpload } from "@/components/ui/file-upload"; // Your custom FileUpload component
 import { LogoutButton } from "@/components/ui/logout-button";
+import { supabase } from "@/lib/supabase";
 
 export default function Level3() {
   const [message, setMessage] = useState("");
   const [file, setFile] = useState<File | null>(null); // ✅ Allow file updates
   const [isCorrect, setIsCorrect] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        router.push("/login");
+        return;
+      }
+
+      const { data: player } = await supabase
+        .from("players")
+        .select("current_level")
+        .eq("id", session.user.id)
+        .single();
+
+      if (!player || player.current_level < 3) {
+        router.push("/cheese-french-fries");
+        return;
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const correctMessage = "foundpassword123"; // Expected result
 
@@ -25,6 +61,11 @@ export default function Level3() {
   };
 
   const handleSubmit = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) return;
+
     if (!message.trim()) {
       alert("Enter your extracted data before submitting.");
       return;
@@ -38,6 +79,17 @@ export default function Level3() {
     // ✅ Local validation before sending request
     if (message.toLowerCase() === correctMessage) {
       setIsCorrect(true);
+      const { error } = await supabase
+        .from("players")
+        .update({ current_level: 4 })
+        .eq("id", session.user.id);
+
+      if (error) {
+        console.error("Error updating level:", error);
+        alert("Something went wrong while saving your progress.");
+        return;
+      }
+
       setTimeout(() => router.push("/cat-in-pan"), 2000);
       return;
     }

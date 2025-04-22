@@ -11,7 +11,6 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { LogoutButton } from "@/components/ui/logout-button";
 import { supabase } from "@/lib/supabase";
 
-
 export default function Level1() {
   const [input, setInput] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
@@ -19,10 +18,114 @@ export default function Level1() {
   const router = useRouter();
 
   useEffect(() => {
+    const setupPlayer = async () => {
+      const {
+        data: { session },
+        error: sessionError,
+      } = await supabase.auth.getSession();
+
+      if (!session || !session.user || sessionError) {
+        console.error("No session or user found:", sessionError, session);
+        return;
+      }
+
+      const userId = session.user.id;
+      const userEmail = session.user.email;
+
+      console.log("Session found:", session);
+      console.log("User ID:", userId);
+
+      if (!userId) {
+        console.error("Invalid user ID");
+        return;
+      }
+
+      // Check if player already exists
+      const { data: existingPlayer, error: fetchError } = await supabase
+        .from("players")
+        .select("id")
+        .eq("id", userId)
+        .single();
+
+      if (fetchError && fetchError.code !== "PGRST116") {
+        console.error("Error checking player:", fetchError);
+        return;
+      }
+
+      if (!existingPlayer) {
+        const { error: insertError } = await supabase.from("players").insert({
+          id: userId,
+          email: userEmail,
+          current_level: 1,
+        });
+
+        if (insertError) {
+          console.error("Player insert error:", {
+            message: insertError.message,
+            code: insertError.code,
+            details: insertError.details,
+            hint: insertError.hint,
+          });
+        } else {
+          console.log("Player inserted successfully.");
+        }
+      } else {
+        console.log("Player already exists.");
+      }
+    };
+
+    setupPlayer();
+  }, []);
+
+  useEffect(() => {
+    const fetchPlayerLevel = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const { data, error } = await supabase
+        .from("players")
+        .select("current_level")
+        .eq("id", session.user.id)
+        .single();
+
+      if (error) {
+        // console.error("Error fetching player level:", error);
+        return;
+      }
+
+      if (data?.current_level) {
+        // Redirect based on level
+        switch (data.current_level) {
+          case 1:
+            router.push("/chicken-noodle-soup");
+            break;
+          case 2:
+            router.push("/cheese-french-fries");
+            break;
+          case 3:
+            router.push("/red-blue-green");
+            break;
+          case 4:
+            router.push("/cat-in-pan");
+            break;
+          default:
+            router.push("/level-zero"); // maybe the intro or first page
+        }
+      }
+    };
+
+    fetchPlayerLevel();
+  }, []);
+
+  useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (!session) {
-        router.push("/login"); 
+        router.push("/login");
         return;
       }
       setIsLoading(false);
@@ -40,9 +143,26 @@ export default function Level1() {
   }
   const correctAnswer = "cheese-french-fries";
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) return;
+
     if (input.toLowerCase() === correctAnswer) {
       setIsCorrect(true);
+
+      const { error } = await supabase
+        .from("players")
+        .update({ current_level: 2 })
+        .eq("id", session.user.id);
+
+      if (error) {
+        console.error("Error updating level:", error);
+        alert("Something went wrong while saving your progress.");
+        return;
+      }
+
       setTimeout(() => router.push("/cheese-french-fries"), 2000);
     } else {
       alert("Incorrect! The shadows whisper… Try again.");

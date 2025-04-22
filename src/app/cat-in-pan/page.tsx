@@ -24,6 +24,17 @@ export default function Level4() {
         router.push("/login");
         return;
       }
+
+      const { data: player } = await supabase
+        .from("players")
+        .select("current_level")
+        .eq("id", session.user.id)
+        .single();
+
+      if (!player || player.current_level < 4) {
+        router.push("/red-blue-green"); // Must complete previous level first
+        return;
+      }
       setIsLoading(false);
     };
 
@@ -41,10 +52,26 @@ export default function Level4() {
   // Expected decrypted message (Update with actual RSA decryption result)
   const correctPassphrase = "trustnoone";
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) return;
+
     if (input.toLowerCase() === correctPassphrase) {
       setIsCorrect(true);
-      setErrorMessage(""); // Clear errors
+
+      const { error } = await supabase
+        .from("players")
+        .update({ current_level: 5 })
+        .eq("id", session.user.id);
+
+      if (error) {
+        console.error("Error updating level:", error);
+        alert("Something went wrong while saving your progress.");
+        return;
+      }
+      setErrorMessage("");
       setTimeout(() => router.push("/completion"), 2000);
     } else {
       setErrorMessage("The shadows conceal the truth... Look deeper.");

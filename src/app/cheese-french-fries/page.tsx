@@ -24,6 +24,17 @@ export default function Level2() {
         router.push("/login");
         return;
       }
+      const { data: player } = await supabase
+        .from("players")
+        .select("current_level")
+        .eq("id", session.user.id)
+        .single();
+
+      if (!player || player.current_level < 2) {
+        router.push("/chicken-noodle-soup"); // Must complete previous level first
+        return;
+      }
+
       setIsLoading(false);
     };
 
@@ -41,9 +52,35 @@ export default function Level2() {
   const encryptedText = "LXFOPVEFRNHR"; // Example Vigenère Cipher text
   const correctAnswer = "HELLOWORLD"; // Change this to your actual expected answer
 
-  const handleSubmit = () => {
+  // const handleSubmit = () => {
+  //   if (input.toUpperCase() === correctAnswer) {
+  //     setIsCorrect(true);
+  //     setTimeout(() => router.push("/red-blue-green"), 2000);
+  //   } else {
+  //     alert("The cipher mocks your ignorance... Try again.");
+  //   }
+  // };
+
+  const handleSubmit = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) return;
+
     if (input.toUpperCase() === correctAnswer) {
       setIsCorrect(true);
+
+      const { error } = await supabase
+        .from("players")
+        .update({ current_level: 3 })
+        .eq("id", session.user.id);
+
+      if (error) {
+        console.error("Error updating level:", error);
+        alert("Something went wrong while saving your progress.");
+        return;
+      }
+
       setTimeout(() => router.push("/red-blue-green"), 2000);
     } else {
       alert("The cipher mocks your ignorance... Try again.");
