@@ -3,39 +3,30 @@
 import Hero from "./components/hero";
 import { GlowingEffectDemo } from "./components/features";
 import GradientBackground from "./components/gradbg";
-// import Hero from "../components/hero";
-// import { GlowingEffectDemo } from "../components/features";
-// import GradientBackground from "../components/gradbg";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 // import { LogoutButton } from "@/components/ui/logout-button";
 
 export default function GamePage() {
   const [showHero, setShowHero] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        if (!session) {
-          router.push("/");
-          return;
-        }
-        setIsLoading(false);
+        await supabase.auth.getSession();
       } catch (error) {
         console.error("Error checking auth:", error);
-        router.push("/");
+      } finally {
+        setIsLoading(false);
       }
     };
 
     checkAuth();
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     if (!isLoading) {

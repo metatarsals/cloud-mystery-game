@@ -40,7 +40,7 @@ export default function SignupPage() {
         alert(
           "Signup successful! Please check your email to confirm your account."
         );
-        router.push("/");
+        router.push("/login");
       }
     } catch {
       setError("An error occurred during signup");
@@ -138,7 +138,7 @@ export default function SignupPage() {
               <p className="text-sm text-white/70">
                 already have an account?{" "}
                 <Link
-                  href="/"
+                  href="/login"
                   className="font-medium text-white hover:text-white/90"
                 >
                   sign in
