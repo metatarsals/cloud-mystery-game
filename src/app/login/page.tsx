@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+// import Link from "next/link";
 import GradientBackground from "../components/gradbg";
 import { motion } from "framer-motion";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
@@ -111,18 +111,6 @@ export default function Home() {
                 </motion.button>
               </div>
             </form>
-
-            <div className="text-center">
-              <p className="text-sm text-white/70">
-                don&apos;t have an account?{" "}
-                <Link
-                  href="/signup"
-                  className="font-medium text-white hover:text-white/90"
-                >
-                  sign up
-                </Link>
-              </p>
-            </div>
           </div>
         </motion.div>
       </div>
