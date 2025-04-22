@@ -3,7 +3,7 @@
 import { HoverBorderGradient } from "./hover-border-gradient";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import LogoutIcon from "@mui/icons-material/Logout";
+// import LogoutIcon from "@mui/icons-material/Logout";
 import { LogOutIcon } from "lucide-react";
 
 export function LogoutButton() {
@@ -11,7 +11,7 @@ export function LogoutButton() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push("/");
+    router.push("/login");
   };
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -9,12 +9,35 @@ import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { Lens } from "@/components/ui/lens";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { LogoutButton } from "@/components/ui/logout-button";
+import { supabase } from "@/lib/supabase";
+
 
 export default function Level1() {
   const [input, setInput] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push("/login"); 
+        return;
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <p>Loading...</p>
+      </div>
+    );
+  }
   const correctAnswer = "cheese-french-fries";
 
   const handleSubmit = () => {

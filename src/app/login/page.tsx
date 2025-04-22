@@ -9,41 +9,29 @@ import { motion } from "framer-motion";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 import { Particles } from "@/components/magicui/particles";
 
-export default function SignupPage() {
+export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
     try {
-      const { error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
       });
 
       if (error) {
         setError(error.message);
       } else {
-        alert(
-          "Signup successful! Please check your email to confirm your account."
-        );
-        router.push("/login");
+        router.push("/chicken-noodle-soup");
       }
     } catch {
-      setError("An error occurred during signup");
+      setError("An error occurred during login");
     }
   };
 
@@ -76,10 +64,10 @@ export default function SignupPage() {
           <div className="relative flex flex-col gap-6">
             <div>
               <h2 className="mt-6 text-center text-3xl font-extrabold text-white lowercase">
-                create your account
+                sign in to your account
               </h2>
             </div>
-            <form className="space-y-6" onSubmit={handleSignup}>
+            <form className="space-y-6" onSubmit={handleLogin}>
               {error && (
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -102,21 +90,11 @@ export default function SignupPage() {
                 </div>
                 <div>
                   <input
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 bg-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 focus:z-10 sm:text-sm"
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 bg-white/10 text-white placeholder-white/50 rounded-b-md focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 focus:z-10 sm:text-sm"
                     type="password"
                     placeholder="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <input
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 bg-white/10 text-white placeholder-white/50 rounded-b-md focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 focus:z-10 sm:text-sm"
-                    type="password"
-                    placeholder="confirm password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                   />
                 </div>
@@ -129,19 +107,19 @@ export default function SignupPage() {
                   type="submit"
                   className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-white/20 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/50"
                 >
-                  sign up
+                  sign in
                 </motion.button>
               </div>
             </form>
 
             <div className="text-center">
               <p className="text-sm text-white/70">
-                already have an account?{" "}
+                don&apos;t have an account?{" "}
                 <Link
-                  href="/login"
+                  href="/signup"
                   className="font-medium text-white hover:text-white/90"
                 >
-                  sign in
+                  sign up
                 </Link>
               </p>
             </div>

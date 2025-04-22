@@ -1,17 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Particles } from "@/components/magicui/particles";
 import { MagicCard } from "@/components/magicui/magic-card";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import { supabase } from "@/lib/supabase";
 
 export default function Level4() {
   const [input, setInput] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(""); // Store error message
   const router = useRouter();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        router.push("/login");
+        return;
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   // Expected decrypted message (Update with actual RSA decryption result)
   const correctPassphrase = "trustnoone";
@@ -29,7 +54,12 @@ export default function Level4() {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white px-8 overflow-hidden">
       {/* Particles Background */}
-      <Particles className="absolute inset-0 z-0" quantity={100} color="#00ffcc" refresh />
+      <Particles
+        className="absolute inset-0 z-0"
+        quantity={100}
+        color="#00ffcc"
+        refresh
+      />
 
       {/* Main Content */}
       <motion.div
@@ -66,7 +96,9 @@ export default function Level4() {
         </MagicCard>
 
         {/* Hidden RSA Message */}
-        <p className="hidden">RSA-Encrypted Message: U2FsdGVkX19XbGF3dmlkZXJ0cnVzdG5vMQ==</p>
+        <p className="hidden">
+          RSA-Encrypted Message: U2FsdGVkX19XbGF3dmlkZXJ0cnVzdG5vMQ==
+        </p>
 
         {/* Input Field for Decrypted Passphrase */}
         <motion.input

@@ -28,7 +28,7 @@ export default function Hero() {
         {/* Search Button */}
         <div className="mt-8">
           <Link
-            href="/chicken-noodle-soup"
+            href="/login"
             className={buttonVariants({
               variant: "outline",
               size: "icon",

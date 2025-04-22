@@ -1,17 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Particles } from "@/components/magicui/particles";
 import { EvervaultCard } from "@/components/ui/evervault-card";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { LogoutButton } from "@/components/ui/logout-button";
+import { supabase } from "@/lib/supabase";
 
 export default function Level2() {
   const [input, setInput] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        router.push("/login");
+        return;
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const encryptedText = "LXFOPVEFRNHR"; // Example Vigenère Cipher text
   const correctAnswer = "HELLOWORLD"; // Change this to your actual expected answer
@@ -28,8 +53,8 @@ export default function Level2() {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-black text-white px-8 overflow-hidden">
       <div className="absolute top-4 right-4 z-50">
-          <LogoutButton />
-        </div>
+        <LogoutButton />
+      </div>
       {/* Particles Background */}
       <Particles
         className="absolute inset-0 z-0"

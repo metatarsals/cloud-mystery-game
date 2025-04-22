@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { LogoutButton } from "@/components/ui/logout-button";
+// import { LogoutButton } from "@/components/ui/logout-button";
 
 export default function GamePage() {
   const [showHero, setShowHero] = useState(false);
