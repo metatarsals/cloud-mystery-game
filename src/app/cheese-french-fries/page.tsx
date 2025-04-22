@@ -13,6 +13,7 @@ export default function Level2() {
   const [input, setInput] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -49,17 +50,8 @@ export default function Level2() {
     );
   }
 
-  const encryptedText = "LXFOPVEFRNHR"; // Example Vigenère Cipher text
-  const correctAnswer = "HELLOWORLD"; // Change this to your actual expected answer
-
-  // const handleSubmit = () => {
-  //   if (input.toUpperCase() === correctAnswer) {
-  //     setIsCorrect(true);
-  //     setTimeout(() => router.push("/red-blue-green"), 2000);
-  //   } else {
-  //     alert("The cipher mocks your ignorance... Try again.");
-  //   }
-  // };
+  const encryptedText = "q'\\bq8[{ljs\\u92a>4U1\\etj\\f8t%:[^'";
+  const correctAnswer = "b'\\xd8[{\\xff\\x92m>4M1\\xff\\x8e%:[^'";
 
   const handleSubmit = async () => {
     const {
@@ -67,7 +59,7 @@ export default function Level2() {
     } = await supabase.auth.getSession();
     if (!session) return;
 
-    if (input.toUpperCase() === correctAnswer) {
+    if (input == correctAnswer) {
       setIsCorrect(true);
 
       const { error } = await supabase
@@ -81,7 +73,12 @@ export default function Level2() {
         return;
       }
 
-      setTimeout(() => router.push("/red-blue-green"), 2000);
+      const { data } = supabase.storage
+        .from("game-assets")
+        .getPublicUrl("encrypted__data.zip");
+
+      const fileUrl = data.publicUrl;
+      setFileUrl(fileUrl || null);
     } else {
       alert("The cipher mocks your ignorance... Try again.");
     }
@@ -108,13 +105,6 @@ export default function Level2() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
       >
-        {/* Heading with MagicCard */}
-        {/* <MagicCard border glow className="p-6 rounded-lg shadow-lg">
-          <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
-            Level 2 - The Whispering Code
-          </h1>
-        </MagicCard> */}
-
         <p className="text-lg text-neutral-300 text-center italic">
           &quot;The voices are trapped within the cipher. Can you hear them? Can
           you set them free?&quot;
@@ -145,17 +135,33 @@ export default function Level2() {
           Submit
         </HoverBorderGradient>
 
-        {/* Success Message */}
         {isCorrect && (
-          <motion.p
-            className="text-green-400 text-lg animate-pulse"
+          <motion.div
+            className="text-green-400 text-lg text-center animate-fade-in mt-6 space-y-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            ✅ &quot;The voices grow silent. You have seen through the illusion…
-            Move forward.&quot;
-          </motion.p>
+            <p>
+              ✅ Correct!{" "}
+              <span className="italic">See you in red-blue-green.</span>
+            </p>
+
+            {fileUrl && (
+              <a
+                href={fileUrl}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-6 py-3 bg-green-600 rounded-full text-white font-semibold hover:bg-green-700 transition"
+                onClick={() => {
+                  setTimeout(() => router.push("/red-blue-green"), 1500);
+                }}
+              >
+                Download encrypted_data.zip
+              </a>
+            )}
+          </motion.div>
         )}
       </motion.div>
     </div>

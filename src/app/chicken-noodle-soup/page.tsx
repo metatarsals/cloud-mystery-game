@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { Particles } from "@/components/magicui/particles";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
@@ -206,7 +205,7 @@ export default function Level1() {
                   lensSize={120}
                   className="flex justify-center items-center"
                 >
-                  <Image
+                  <img
                     src="/level-1-image-final.jpg"
                     alt="check here"
                     width={1785}

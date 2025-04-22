@@ -4,15 +4,13 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Particles } from "@/components/magicui/particles";
-import { MagicCard } from "@/components/magicui/magic-card";
-import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
-import { FileUpload } from "@/components/ui/file-upload"; // Your custom FileUpload component
+import { FileUpload } from "@/components/ui/file-upload";
 import { LogoutButton } from "@/components/ui/logout-button";
 import { supabase } from "@/lib/supabase";
 
 export default function Level3() {
-  const [message, setMessage] = useState("");
-  const [file, setFile] = useState<File | null>(null); // ✅ Allow file updates
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [file, setFile] = useState<File | null>(null);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -51,70 +49,44 @@ export default function Level3() {
     );
   }
 
-  const correctMessage = "foundpassword123"; // Expected result
+  const handleFileChange = async (files: File[]) => {
+    if (!files || files.length === 0) return;
 
-  // ✅ Define the missing handleFileChange function
-  const handleFileChange = (files: File[]) => {
-    if (files && files.length > 0) {
-      setFile(files[0]); // Assuming single file upload
-    }
-  };
+    const uploadedFile = files[0];
+    setFile(uploadedFile);
 
-  const handleSubmit = async () => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    if (!session) return;
+    const reader = new FileReader();
 
-    if (!message.trim()) {
-      alert("Enter your extracted data before submitting.");
-      return;
-    }
+    reader.onload = async (event) => {
+      const text = (event.target?.result as string).trim();
 
-    if (!file) {
-      alert("Upload a .pcap file before submitting.");
-      return;
-    }
-
-    // ✅ Local validation before sending request
-    if (message.toLowerCase() === correctMessage) {
-      setIsCorrect(true);
-      const { error } = await supabase
-        .from("players")
-        .update({ current_level: 4 })
-        .eq("id", session.user.id);
-
-      if (error) {
-        console.error("Error updating level:", error);
-        alert("Something went wrong while saving your progress.");
-        return;
-      }
-
-      setTimeout(() => router.push("/cat-in-pan"), 2000);
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("message", message);
-
-    try {
-      const response = await fetch("/api/analyze-pcap", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-      if (data.correct) {
+      if (text === "pretend-you-dont-see-me") {
         setIsCorrect(true);
+
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        if (!session) return;
+
+        const { error } = await supabase
+          .from("players")
+          .update({ current_level: 4 })
+          .eq("id", session.user.id);
+
+        if (error) {
+          console.error("Error updating level:", error);
+          alert("Something went wrong while saving your progress.");
+          return;
+        }
+
         setTimeout(() => router.push("/cat-in-pan"), 2000);
       } else {
-        alert("The data eludes you... Seek deeper.");
+        alert("The file whispers the wrong phrase... Try again.");
       }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      alert("Failed to process the file. Try again.");
-    }
+    };
+
+    reader.readAsText(uploadedFile);
   };
 
   return (
@@ -122,59 +94,25 @@ export default function Level3() {
       <div className="absolute top-4 right-4 z-50">
         <LogoutButton />
       </div>
-      {/* Particles Background */}
       <Particles
         className="absolute inset-0 z-0"
         quantity={100}
         color="#7289da"
       />
 
-      {/* Main Content */}
       <motion.div
         className="relative z-10 flex flex-col items-center space-y-6"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
       >
-        {/* Heading */}
-        <MagicCard border glow className="p-6 rounded-lg shadow-lg">
-          <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-blue-400 via-cyan-500 to-teal-500 bg-clip-text text-transparent">
-            Level 3 - The Silent Signals
-          </h1>
-        </MagicCard>
-
         <p className="text-lg text-neutral-300 text-center italic">
           &quot;The network whispers its secrets, but only those who listen will
           hear the truth.&quot;
         </p>
 
-        {/* File Upload (Using Your Custom Component) */}
         <FileUpload onChange={handleFileChange} />
 
-        {/* Input Field */}
-        <motion.input
-          type="text"
-          placeholder="What have you uncovered?"
-          className="p-2 text-black rounded border border-gray-600 shadow-lg w-64 text-center"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          initial={{ scale: 0.9 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.5 }}
-        />
-
-        {/* Submit Button */}
-        <HoverBorderGradient
-          onClick={handleSubmit}
-          containerClassName="mt-4"
-          gradient="from-blue-500 via-cyan-500 to-teal-500"
-          className="text-white font-medium tracking-wide shadow-md transition-all 
-                     hover:shadow-lg hover:brightness-110"
-        >
-          Submit
-        </HoverBorderGradient>
-
-        {/* Success Message */}
         {isCorrect && (
           <motion.p
             className="text-green-400 text-lg animate-pulse"

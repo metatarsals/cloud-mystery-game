@@ -9,10 +9,10 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { supabase } from "@/lib/supabase";
 
 export default function Level4() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [input, setInput] = useState("");
-  const [isCorrect, setIsCorrect] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(""); // Store error message
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function Level4() {
         .single();
 
       if (!player || player.current_level < 4) {
-        router.push("/red-blue-green"); // Must complete previous level first
+        router.push("/red-blue-green");
         return;
       }
       setIsLoading(false);
@@ -49,33 +49,12 @@ export default function Level4() {
     );
   }
 
-  // Expected decrypted message (Update with actual RSA decryption result)
-  const correctPassphrase = "trustnoone";
-
   const handleSubmit = async () => {
     const {
       data: { session },
     } = await supabase.auth.getSession();
     if (!session) return;
-
-    if (input.toLowerCase() === correctPassphrase) {
-      setIsCorrect(true);
-
-      const { error } = await supabase
-        .from("players")
-        .update({ current_level: 5 })
-        .eq("id", session.user.id);
-
-      if (error) {
-        console.error("Error updating level:", error);
-        alert("Something went wrong while saving your progress.");
-        return;
-      }
-      setErrorMessage("");
-      setTimeout(() => router.push("/completion"), 2000);
-    } else {
-      setErrorMessage("The shadows conceal the truth... Look deeper.");
-    }
+    setErrorMessage("The shadows conceal the truth... Look deeper.");
   };
 
   return (
@@ -95,13 +74,6 @@ export default function Level4() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
       >
-        {/* Heading with MagicCard */}
-        <MagicCard className="p-6 rounded-lg shadow-lg border border-teal-500 bg-gray-900">
-          <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-green-400 via-teal-500 to-gray-400 bg-clip-text text-transparent">
-            Level 4 - The Forbidden Gate
-          </h1>
-        </MagicCard>
-
         <p className="text-lg text-neutral-400 text-center italic">
           &quot;The door stands locked. Only the enlightened may pass.&quot;
         </p>
@@ -111,38 +83,25 @@ export default function Level4() {
           <div className="flex flex-col space-y-4">
             <input
               type="text"
-              placeholder="Username"
-              className="p-2 text-white rounded border border-teal-500 bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-400"
-            />
-            <input
-              type="password"
-              placeholder="Password"
+              placeholder="source"
               className="p-2 text-white rounded border border-teal-500 bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-400"
             />
           </div>
         </MagicCard>
 
-        {/* Hidden RSA Message */}
         <p className="hidden">
-          RSA-Encrypted Message: U2FsdGVkX19XbGF3dmlkZXJ0cnVzdG5vMQ==
+          RSA-Encrypted Message: Encrypted Chunks: [(2304774, 2), (7425838, 2),
+          (2802020, 2), (4156775, 2), (1485630, 2), (991077, 2), (4571598, 2),
+          (2895742, 2), (1812834, 2), (5234546, 2), (4319335, 2), (2424898, 2),
+          (5456032, 2), (447193, 2), (2693108, 2), (7145475, 2), (5212004, 2),
+          (5591922, 2), (2575733, 2), (7822984, 2), (7922145, 2), (4451102, 2),
+          (4779636, 2), (3078253, 2), (110358, 2), (6300545, 2), (4403987, 2),
+          (4590983, 2), (5453295, 2), (785992, 2), (6450096, 2)] Private Key:
+          (1596269, 7990271)
         </p>
 
-        {/* Input Field for Decrypted Passphrase */}
-        <motion.input
-          type="text"
-          placeholder="Enter the key to the void..."
-          className="p-2 text-black rounded border border-gray-600 shadow-lg w-64 text-center bg-gray-300"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          initial={{ scale: 0.9 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.5 }}
-        />
-
-        {/* Error Message */}
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
-        {/* Submit Button */}
         <HoverBorderGradient
           onClick={handleSubmit}
           containerClassName="mt-4"
@@ -151,18 +110,6 @@ export default function Level4() {
         >
           Unlock
         </HoverBorderGradient>
-
-        {/* Success Message */}
-        {isCorrect && (
-          <motion.p
-            className="text-green-400 text-lg animate-pulse"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            ✅ &quot;The void acknowledges you... Proceed, if you dare.&quot;
-          </motion.p>
-        )}
       </motion.div>
     </div>
   );
